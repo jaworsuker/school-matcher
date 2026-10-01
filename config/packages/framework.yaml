@@ -3,7 +3,11 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session: false
+
+    serializer:
+        default_context:
+            json_encode_options: !php/const JSON_UNESCAPED_UNICODE
 
     #esi: true
     #fragments: true
