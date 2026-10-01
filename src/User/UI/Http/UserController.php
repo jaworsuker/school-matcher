@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\User\UI\Http;
 
+use App\Shared\UI\Http\ApiController;
 use App\User\Application\Register\RegisterUserCommand;
 use App\User\Application\Register\RegisterUserHandler;
 use App\User\Domain\Exception\EmailAlreadyRegisteredException;
 use App\User\Domain\Repository\UserRepositoryInterface;
 use App\User\UI\Http\Request\RegisterUserRequest;
 use App\User\UI\Http\Response\UserView;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 
 #[Route('/api/users', format: 'json')]
-final class UserController extends AbstractController
+final class UserController extends ApiController
 {
     #[Route('', name: 'api_users_register', methods: ['POST'])]
     public function register(#[MapRequestPayload] RegisterUserRequest $request, RegisterUserHandler $handler): JsonResponse

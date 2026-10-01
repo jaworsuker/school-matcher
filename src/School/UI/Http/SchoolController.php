@@ -9,13 +9,13 @@ use App\School\Domain\Repository\SchoolRepositoryInterface;
 use App\School\UI\Http\Request\MatchSchoolRequest;
 use App\School\UI\Http\Response\MatchResultView;
 use App\School\UI\Http\Response\SchoolView;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Shared\UI\Http\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/schools', format: 'json')]
-final class SchoolController extends AbstractController
+final class SchoolController extends ApiController
 {
     #[Route('', name: 'api_schools_list', methods: ['GET'])]
     public function list(SchoolRepositoryInterface $schools): JsonResponse

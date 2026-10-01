@@ -7,7 +7,7 @@ PHP     = $(DC) exec php
 CONSOLE = $(PHP) php bin/console
 
 .DEFAULT_GOAL := help
-.PHONY: help setup build up down install migrate import test sh logs
+.PHONY: help setup build up down reset install migrate import test sh logs
 
 help: ## Lista dostępnych komend
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -22,6 +22,9 @@ up: ## Start kontenerów
 
 down: ## Zatrzymanie kontenerów
 	$(DC) down
+
+reset: ## Zatrzymanie kontenerów i usunięcie bazy danych
+	$(DC) down -v
 
 install: ## Instalacja zależności composera
 	$(PHP) composer install --no-interaction
