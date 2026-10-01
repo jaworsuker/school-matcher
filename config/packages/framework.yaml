@@ -7,7 +7,8 @@ framework:
 
     serializer:
         default_context:
-            json_encode_options: !php/const JSON_UNESCAPED_UNICODE
+            # JSON_UNESCAPED_SLASHES (64) | JSON_PRETTY_PRINT (128) | JSON_UNESCAPED_UNICODE (256) - dotyczy m.in. odpowiedzi z błędami
+            json_encode_options: 448
 
     #esi: true
     #fragments: true
