@@ -62,8 +62,8 @@ Pole `city` w żądaniu jest opcjonalne. Pomaga rozstrzygnąć niejednoznaczne p
 curl -X POST localhost:8080/api/schools/match -H 'Content-Type: application/json' -d '{"name": "LO", "city": "Kraków"}'
 ```
 
-Błędy zwracane są jako JSON (RFC 7807): `422` przy walidacji (z listą `violations`), `409` gdy e-mail jest
-zajęty, `404` dla nieistniejącego użytkownika, `400` przy niepoprawnym JSON.
+Błędy zwracane są jako zwięzły JSON (RFC 7807, bez śladu stosu): `422` przy walidacji (z listą `violations`), `409` gdy e-mail jest
+zajęty, `404` dla nieistniejącego użytkownika lub endpointu, `405` przy złej metodzie HTTP, `400` przy niepoprawnym JSON.
 
 ## Założenia
 

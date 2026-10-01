@@ -63,7 +63,25 @@ final class UserApiTest extends ApiTestCase
         $data = $this->postJson('/api/users', ['email' => 'not-an-email', 'schoolName' => '']);
 
         self::assertResponseStatusCodeSame(422);
-        self::assertEqualsCanonicalizing(['email', 'schoolName'], array_column($data['violations'], 'propertyPath'));
+        self::assertEqualsCanonicalizing(['email', 'schoolName'], array_column($data['violations'], 'field'));
+    }
+
+    public function testReturnsJsonErrorForUnsupportedMethod(): void
+    {
+        $this->client->request('POST', '/api/users/1');
+        $data = $this->responseJson();
+
+        self::assertResponseStatusCodeSame(405);
+        self::assertResponseHeaderSame('Allow', 'GET');
+        self::assertSame(['status', 'title', 'detail'], array_keys($data));
+    }
+
+    public function testReturnsJsonErrorForUnknownEndpoint(): void
+    {
+        $this->client->request('GET', '/api/nope');
+
+        self::assertResponseStatusCodeSame(404);
+        self::assertSame('Nie znaleziono takiego endpointu.', $this->responseJson()['detail']);
     }
 
     public function testReturnsNotFoundForUnknownUser(): void
