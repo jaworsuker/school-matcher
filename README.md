@@ -177,8 +177,11 @@ matchera działają na repozytorium w pamięci, bez bazy.
   Wtedy dochodzi kilkadziesiąt tysięcy szkół, więc dopasowanie z pełnym przeglądem katalogu trzeba
   zastąpić wstępnym wyborem kandydatów (MySQL FULLTEXT, Elasticsearch/Meilisearch) i dopiero na nich
   liczyć dokładny wynik. Indeks (wagi, warianty) warto wtedy cache'ować i przeliczać po imporcie.
-- **Panel weryfikacji** przypisań `needs_review`: `PATCH /api/users/{id}/school-assignment` z wybraną
-  szkołą. Dane do tego już są: zapisany oryginalny wpis i kandydaci.
+- **Większa ilość danych**: W przypadku większej liczby szkół obecny mechanizm można rozszerzyć o bardziej 
+  zaawansowane wyszukiwanie fuzzy oraz wyszukiwanie semantyczne
+- **Panel weryfikacji** przypisań `needs_review`: moderator widzi oryginalny wpis i listę sugerowanych szkół
+  posortowaną wg wyniku dopasowania (dane są już zapisywane w `school_assignment.candidates`). Wybór szkoły
+  przez `PATCH /api/users/{id}/school-assignment`.
 - **Uczenie się aliasów**: ręcznie zatwierdzony wpis (np. „Staszicówka” → XIV LO) może zostać dodany jako
   alias szkoły, więc następnym razem dopasuje się automatycznie.
 - **Zapobieganie u źródła**: autocomplete w formularzu rejestracji oparte o `POST /api/schools/match`.
