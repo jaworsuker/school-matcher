@@ -114,7 +114,10 @@ Dzięki temu „Liceum Mickiewicza” trafia w Mickiewicza, a nie w dowolne lice
 automatycznie z katalogu, bez ręcznie utrzymywanej listy słów ważnych i nieważnych.
 
 **5. Reguły dodatkowe:**
-- **różny numer wyklucza szkołę.** `II LO` i `III LO` różnią się jedną literą, ale to różne szkoły,
+- **numer musi się zgadzać dokładnie.** `II LO` i `III LO` różnią się jedną literą, ale to różne szkoły,
+  więc numery nie podlegają tolerancji literówek. Szkoła o innym numerze dostaje dodatkowo karę (×0.8), ale
+  nie jest wykluczana: przy wpisie sprzecznym („V LO Konopnickiej”) obie szkoły, ta z numeru i ta z patrona,
+  trafiają do kandydatów do weryfikacji,
 - **miasto:** wykrywane z wpisu („Staszic Warszawa”, „LO w Krakowie”) albo podawane w osobnym polu.
   Szkoły z innego miasta dostają karę (×0.7), ale nie są odrzucane, bo użytkownik mógł się pomylić,
 - **progi:** `matched` przy wyniku ≥ 0.8 i przewadze ≥ 0.1 nad drugim kandydatem, `needs_review` przy
@@ -131,7 +134,7 @@ automatycznie z katalogu, bez ręcznie utrzymywanej listy słów ważnych i niew
 | `ZSEiI`, `Elektronik Warszawa` | `matched` – ZSEiI                                    |
 | `Konopnickiej w Gdańsku`     | `matched`, wykryte miasto Gdańsk                       |
 | `LO w Krakowie`              | `needs_review` – dwa licea w Krakowie z tym samym wynikiem |
-| `II LO Kopernika`            | `needs_review` – numer wskazuje na inną szkołę niż patron |
+| `II LO Kopernika`, `V LO Konopnickiej` | `needs_review` – numer wskazuje na inną szkołę niż patron, obie są kandydatami |
 | `Mickiewicz` + `city: Kraków`| `needs_review` – szkoła jest w Warszawie               |
 | `IV LO`, `Szkoła Podstawowa nr 3` | `unmatched`                                       |
 

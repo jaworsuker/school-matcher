@@ -27,6 +27,13 @@ final class SchoolMatcher
     /** Kara, gdy podane miasto nie zgadza się z miastem szkoły. */
     private const CITY_MISMATCH_FACTOR = 0.7;
 
+    /**
+     * Kara, gdy numer we wpisie jest inny niż numer szkoły. Celowo kara, a nie wykluczenie: użytkownik może
+     * pomylić numer tak samo jak patrona, a przy wpisie sprzecznym ("V LO Konopnickiej") obie szkoły
+     * powinny trafić do kandydatów do weryfikacji.
+     */
+    private const NUMBER_MISMATCH_FACTOR = 0.8;
+
     private const CITY_SIMILARITY_THRESHOLD = 0.9;
 
     public function __construct(
@@ -59,10 +66,6 @@ final class SchoolMatcher
 
         $candidates = [];
         foreach ($index->entries() as $entry) {
-            if (null !== $name->number && null !== $entry->number && $name->number !== $entry->number) {
-                continue;
-            }
-
             $best = null;
             foreach ($entry->variants as $variant => $variantName) {
                 $score = $this->score($name->tokens, $variantName->tokens, $index);
@@ -76,6 +79,9 @@ final class SchoolMatcher
             }
 
             [$score, $variant] = $best;
+            if (null !== $name->number && null !== $entry->number && $name->number !== $entry->number) {
+                $score *= self::NUMBER_MISMATCH_FACTOR;
+            }
             if (null !== $city && !$this->isSameCity($city, $entry->school)) {
                 $score *= self::CITY_MISMATCH_FACTOR;
             }

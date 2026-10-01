@@ -118,6 +118,29 @@ final class SchoolMatcherTest extends TestCase
         self::assertSame('III Liceum Ogólnokształcące im. Juliusza Słowackiego', $this->matcher->match('III LO')->matchedSchool()?->getOfficialName());
     }
 
+    #[DataProvider('conflictingNumberAndPatron')]
+    public function testOffersBothSchoolsWhenNumberContradictsPatron(string $input, string $byNumber, string $byPatron): void
+    {
+        $result = $this->matcher->match($input);
+        $names = array_map(static fn (MatchCandidate $c) => $c->school->getOfficialName(), $result->candidates);
+
+        self::assertSame(MatchStatus::NeedsReview, $result->status, $this->describe($result->candidates));
+        self::assertContains($byNumber, $names);
+        self::assertContains($byPatron, $names);
+    }
+
+    /**
+     * @return iterable<string, array{string, string, string}>
+     */
+    public static function conflictingNumberAndPatron(): iterable
+    {
+        $konopnicka = 'II Liceum Ogólnokształcące im. Marii Konopnickiej';
+
+        yield 'V LO + patron II LO' => ['V LO Konopnickiej', 'Liceum Ogólnokształcące nr 5 im. Józefa Wybickiego', $konopnicka];
+        yield 'XIV LO + patron II LO' => ['XIV LO Konopnickiej', 'XIV Liceum Ogólnokształcące im. Stanisława Staszica', $konopnicka];
+        yield 'III LO + patron I LO' => ['III LO Mickiewicza', 'III Liceum Ogólnokształcące im. Juliusza Słowackiego', 'I Liceum Ogólnokształcące im. Adama Mickiewicza'];
+    }
+
     public function testDetectsCityFromInput(): void
     {
         self::assertSame('Gdynia', $this->matcher->match('Technikum Mechatroniczne Gdynia')->city);
